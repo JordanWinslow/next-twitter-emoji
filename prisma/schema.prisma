@@ -6,12 +6,14 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "mysql"
     url      = env("DATABASE_URL")
+    // PlanetScale does not support traditional foreign key constraints
+    // and therefore we emulate them with the relationMode option 
+    relationMode = "prisma"
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model JordanIsCool {
+    id Int @id @default(autoincrement())
+    hello String @default("World")
 }
