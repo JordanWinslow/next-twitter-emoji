@@ -5,9 +5,10 @@ import Head from "next/head"
 import { api } from "~/utils/api"
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" })
-
   const user = useUser()
+
+  const { data: posts } = api.posts.getAll.useQuery()
+  console.log("POST DATA: ", posts)
 
   return (
     <>
@@ -27,6 +28,11 @@ const Home: NextPage = () => {
             <SignInButton />
           </>
         )}
+        <div>
+          {posts?.map((post) => (
+            <div key={post.id}>{post.content}</div>
+          ))}
+        </div>
       </main>
     </>
   )
