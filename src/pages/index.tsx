@@ -1,11 +1,11 @@
-import { type NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
+import { type NextPage } from "next"
+import Head from "next/head"
+import Link from "next/link"
 
-import { api } from "~/utils/api";
+import { api } from "~/utils/api"
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const hello = api.example.hello.useQuery({ text: "from tRPC" })
 
   return (
     <>
@@ -49,7 +49,7 @@ const Home: NextPage = () => {
         </div>
       </main>
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
