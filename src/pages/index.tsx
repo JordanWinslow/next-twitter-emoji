@@ -24,6 +24,7 @@ const LoadingSpinner = ({ size }: { size?: number }) => {
 const CreatePostForm = () => {
   const { user, isLoaded } = useUser()
   const ctx = api.useContext()
+
   const { mutate: createPost, isLoading: isPosting } =
     api.posts.createPost.useMutation({
       onError: (error) => {
@@ -36,16 +37,21 @@ const CreatePostForm = () => {
         toast.error(apiErrorMessage || defaultErrorMessage)
       },
       onSuccess: () => {
-        inputRef.current!.value = ""
-        ctx.posts.invalidate()
+        if (inputRef.current) {
+          inputRef.current.value = ""
+        }
+        void ctx.posts.invalidate()
       },
     })
+
   const inputRef = useRef<HTMLInputElement>(null)
   // would replace this with a form library like finalform or react-hook-form
   // if this was a real production app
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    createPost({ content: inputRef.current!.value })
+    if (inputRef.current) {
+      createPost({ content: inputRef.current.value })
+    }
   }
 
   if (!isLoaded) {
