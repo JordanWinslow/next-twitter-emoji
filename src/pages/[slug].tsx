@@ -14,16 +14,15 @@ interface IUserProfilePageProps {
 }
 
 const UserProfilePage: NextPage<IUserProfilePageProps> = (props) => {
-  const { data: profile, isLoading } = api.profile.getUserByUsername.useQuery({
-    username: "jordanwinslow",
+  const { data: profile } = api.profile.getUserByUsername.useQuery({
+    username: props.username,
   })
 
   if (!profile) {
     return <div>Loading...</div>
   }
 
-  const { data: posts, isLoading: postsLoading } =
-    api.posts.getByUserId.useQuery({ userId: profile.id })
+  const { data: posts } = api.posts.getByUserId.useQuery({ userId: profile.id })
 
   return (
     <>

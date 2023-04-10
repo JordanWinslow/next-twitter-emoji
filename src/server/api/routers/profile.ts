@@ -7,7 +7,7 @@ import { filterUserProperties } from "../util/filterUserProperties"
 export const profileRouter = createTRPCRouter({
   getUserByUsername: publicProcedure
     .input(z.object({ username: z.string() }))
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       const user = await clerkClient.users.getUserList({
         username: [input.username],
       })
