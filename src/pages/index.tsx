@@ -7,7 +7,7 @@ import Link from "next/link"
 import { useRef, type FormEvent } from "react"
 import { toast } from "react-hot-toast"
 import { api, type RouterOutputs } from "~/utils/api"
-import { RootLayout } from "./Layout"
+import { RootLayout } from "../Layouts/Layout"
 
 const LoadingSpinner = ({ size }: { size?: number }) => {
   return (

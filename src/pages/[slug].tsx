@@ -7,7 +7,7 @@ import { appRouter } from "~/server/api/root"
 import { prisma } from "~/server/db"
 import { api } from "~/utils/api"
 import { UserPost } from "."
-import { RootLayout } from "./Layout"
+import { RootLayout } from "../Layouts/Layout"
 
 interface IUserProfilePageProps {
   username: string
