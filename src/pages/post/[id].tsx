@@ -1,10 +1,15 @@
 import { SignInButton, useUser } from "@clerk/nextjs"
+import { createProxySSGHelpers } from "@trpc/react-query/ssg"
 import dayjs from "dayjs"
-import { type NextPage } from "next"
+import { type GetStaticProps, type NextPage } from "next"
 import Head from "next/head"
 import Image from "next/image"
 import { useRef, type FormEvent } from "react"
 import { toast } from "react-hot-toast"
+import superjson from "superjson"
+import { RootLayout } from "~/Layouts/Layout"
+import { appRouter } from "~/server/api/root"
+import { prisma } from "~/server/db"
 import { api, type RouterOutputs } from "~/utils/api"
 
 const LoadingSpinner = ({ size }: { size?: number }) => {
@@ -92,7 +97,7 @@ const CreatePostForm = () => {
   }
 }
 
-type PostWithUser = RouterOutputs["posts"]["getAll"][number]
+type PostWithUser = RouterOutputs["posts"]["getByPostId"][number]
 const UserPost = ({ post }: { post: PostWithUser }) => {
   return (
     <div className="mb-3 flex flex-col" key={post.id}>
@@ -117,10 +122,16 @@ const UserPost = ({ post }: { post: PostWithUser }) => {
   )
 }
 
-const UserPostPage: NextPage = () => {
+interface IPostPageProps {
+  postId: string
+}
+
+const PostPage: NextPage<IPostPageProps> = (props) => {
   const user = useUser()
 
-  const { data: posts, isLoading } = api.posts.getAll.useQuery()
+  const { data: post, isLoading } = api.posts.getByPostId.useQuery({
+    id: props.postId,
+  })
 
   if (isLoading) {
     return (
@@ -130,7 +141,7 @@ const UserPostPage: NextPage = () => {
     )
   }
 
-  if (!posts) {
+  if (!post) {
     return <div>Something went wrong while retrieving posts.</div>
   }
 
@@ -139,27 +150,51 @@ const UserPostPage: NextPage = () => {
       <Head>
         <title>Twitter Emoji User Post Page</title>
       </Head>
-      <main className="flex h-screen justify-center">
-        <div className="flex h-full w-full flex-col  md:max-w-2xl">
-          <div className="flex border-b-2 border-green-900 p-4">
-            {user.isSignedIn ? (
-              <CreatePostForm />
-            ) : (
-              <div className="flex justify-center">
-                <SignInButton />
-              </div>
-            )}
-          </div>
-
-          <div className="overflow-scroll p-8">
-            {posts.map((post) => (
-              <UserPost post={post} key={post.id} />
-            ))}
-          </div>
+      <RootLayout>
+        <div className="flex border-b-2 border-green-900 p-4">
+          {user.isSignedIn ? (
+            <CreatePostForm />
+          ) : (
+            <div className="flex justify-center">
+              <SignInButton />
+            </div>
+          )}
         </div>
-      </main>
+
+        <div className="overflow-scroll p-8">
+          <UserPost post={post} />
+        </div>
+      </RootLayout>
     </>
   )
 }
 
-export default UserPostPage
+export const getStaticProps: GetStaticProps = async (context) => {
+  const ssg = createProxySSGHelpers({
+    router: appRouter,
+    ctx: { prisma, userId: null },
+    transformer: superjson, // optional - adds superjson serialization
+  })
+
+  const slug = context.params?.id
+
+  if (slug === undefined || typeof slug !== "string") throw new Error("No slug")
+
+  // fetch user on server side and hydrate it via server side props
+  await ssg.posts.getByPostId.prefetch({ id: slug })
+
+  return {
+    props: {
+      // ensure query data is present in react-query context and not just
+      // fetched and processed exclusively on server side
+      trpcState: ssg.dehydrate(),
+      postId: slug,
+    },
+  }
+}
+
+export const getStaticPaths = () => {
+  return { paths: [], fallback: "blocking" }
+}
+
+export default PostPage
