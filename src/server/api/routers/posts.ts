@@ -1,4 +1,3 @@
-import { type User } from "@clerk/backend"
 import { clerkClient } from "@clerk/nextjs/server"
 import { TRPCError } from "@trpc/server"
 import { z } from "zod"
@@ -17,18 +16,9 @@ const postInputSchema = z.object({
     .emoji("Only emojis are allowed!"),
 })
 
-const filterUserProperties = (user: User) => {
-  return {
-    id: user.id,
-    userName: user.username || "randomuser " + user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    image: user.profileImageUrl,
-  }
-}
-
 import { Ratelimit } from "@upstash/ratelimit" // for deno: see above
 import { Redis } from "@upstash/redis"
+import { filterUserProperties } from "../util/filterUserProperties"
 
 // Create a new ratelimiter, that allows 3 requests per 1 minute
 const ratelimit = new Ratelimit({

@@ -3,11 +3,9 @@ import dayjs from "dayjs"
 import { type NextPage } from "next"
 import Head from "next/head"
 import Image from "next/image"
-import Link from "next/link"
 import { useRef, type FormEvent } from "react"
 import { toast } from "react-hot-toast"
 import { api, type RouterOutputs } from "~/utils/api"
-import { RootLayout } from "./Layout"
 
 const LoadingSpinner = ({ size }: { size?: number }) => {
   return (
@@ -69,7 +67,7 @@ const CreatePostForm = () => {
       <div className="flex w-full items-center">
         <Image
           src={user.profileImageUrl}
-          alt={`${user.username || "your"} user avatar`}
+          alt={`@${user.username || "your"} user avatar`}
           className="rounded-xl"
           width={90}
           height={90}
@@ -107,15 +105,10 @@ const UserPost = ({ post }: { post: PostWithUser }) => {
           height={50}
         />
         <div className="flex flex-col">
-          <Link href={`/${post.author.userName}`}>
-            <p className="text-md">{post.author.userName}</p>
-          </Link>
-          <Link href={`/post/${post.id}`}>
-            <p className="text-xs text-slate-300 opacity-75">
-              @{" "}
-              {dayjs(post.dateCreated).format("YYYY-MM-DD hh:mm a").toString()}
-            </p>
-          </Link>
+          <p className="text-md">{post.author.userName}</p>
+          <p className="text-xs text-slate-300 opacity-75">
+            @ {dayjs(post.dateCreated).format("YYYY-MM-DD hh:mm a").toString()}
+          </p>
         </div>
       </div>
 
@@ -124,7 +117,7 @@ const UserPost = ({ post }: { post: PostWithUser }) => {
   )
 }
 
-const Home: NextPage = () => {
+const UserPostPage: NextPage = () => {
   const user = useUser()
 
   const { data: posts, isLoading } = api.posts.getAll.useQuery()
@@ -144,32 +137,28 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Twitter Emoji</title>
-        <meta
-          name="description"
-          content="Mini Twitter clone created by Jordan Winslow complete with network rate limiting, user auth, intelligent errors with schema validation, an intelligent caching layer and much more!"
-        />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="icon" type="image/png" href="/favicon.png" />
+        <title>Twitter Emoji User Post Page</title>
       </Head>
-      <RootLayout>
-        <div className="flex border-b-2 border-green-900 p-4">
-          {user.isSignedIn ? (
-            <CreatePostForm />
-          ) : (
-            <div className="flex justify-center">
-              <SignInButton />
-            </div>
-          )}
+      <main className="flex h-screen justify-center">
+        <div className="flex h-full w-full flex-col  md:max-w-2xl">
+          <div className="flex border-b-2 border-green-900 p-4">
+            {user.isSignedIn ? (
+              <CreatePostForm />
+            ) : (
+              <div className="flex justify-center">
+                <SignInButton />
+              </div>
+            )}
+          </div>
+          <div className="overflow-scroll p-8">
+            {posts.map((post) => (
+              <UserPost post={post} key={post.id} />
+            ))}
+          </div>
         </div>
-        <div className="overflow-scroll p-8">
-          {posts.map((post) => (
-            <UserPost post={post} key={post.id} />
-          ))}
-        </div>
-      </RootLayout>
+      </main>
     </>
   )
 }
 
-export default Home
+export default UserPostPage
