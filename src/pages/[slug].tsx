@@ -6,6 +6,7 @@ import superjson from "superjson"
 import { appRouter } from "~/server/api/root"
 import { prisma } from "~/server/db"
 import { api } from "~/utils/api"
+import { UserPost } from "."
 import { RootLayout } from "./Layout"
 
 interface IUserProfilePageProps {
@@ -16,11 +17,13 @@ const UserProfilePage: NextPage<IUserProfilePageProps> = (props) => {
   const { data: profile, isLoading } = api.profile.getUserByUsername.useQuery({
     username: "jordanwinslow",
   })
-  console.log("IS LOADING? ", isLoading)
 
   if (!profile) {
     return <div>Loading...</div>
   }
+
+  const { data: posts, isLoading: postsLoading } =
+    api.posts.getByUserId.useQuery({ userId: profile.id })
 
   return (
     <>
@@ -37,11 +40,17 @@ const UserProfilePage: NextPage<IUserProfilePageProps> = (props) => {
             className="absolute bottom-0 left-0 -mb-20 ml-10 rounded-lg border-2 border-black"
           />
         </div>
+
         <div className="text-2xl font-bold">{`${profile.firstName || ""} ${
           profile.lastName || ""
         }`}</div>
         <div className="border-b-2 border-green-800 pb-3">
           @{profile.userName}
+        </div>
+        <div className="overflow-scroll p-8">
+          {posts?.map((post) => (
+            <UserPost post={post} key={post.id} />
+          ))}
         </div>
       </RootLayout>
     </>

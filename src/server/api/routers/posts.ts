@@ -1,4 +1,5 @@
 import { clerkClient } from "@clerk/nextjs/server"
+import type { Post } from "@prisma/client"
 import { TRPCError } from "@trpc/server"
 import { z } from "zod"
 import {
@@ -27,32 +28,47 @@ const ratelimit = new Ratelimit({
   analytics: true,
 })
 
+async function addAuthorToPosts(posts: Post[]) {
+  const users = (
+    await clerkClient.users.getUserList({
+      userId: posts.map((post) => post.authorId),
+    })
+  ).map(filterUserProperties)
+
+  return posts.map((post) => {
+    const author = users.find((user) => user.id === post.authorId)
+    if (!author) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "No author found for post",
+      })
+    }
+    return {
+      ...post,
+      author,
+    }
+  })
+}
+
 export const postsRouter = createTRPCRouter({
+  getByUserId: publicProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const posts = await ctx.prisma.post.findMany({
+        take: 100,
+        where: { authorId: input.userId },
+        orderBy: { dateCreated: "desc" },
+      })
+
+      return await addAuthorToPosts(posts)
+    }),
   getAll: publicProcedure.query(async ({ ctx }) => {
     const posts = await ctx.prisma.post.findMany({
       take: 100,
       orderBy: { dateCreated: "desc" },
     })
 
-    const users = (
-      await clerkClient.users.getUserList({
-        userId: posts.map((post) => post.authorId),
-      })
-    ).map(filterUserProperties)
-
-    return posts.map((post) => {
-      const author = users.find((user) => user.id === post.authorId)
-      if (!author) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "No author found for post",
-        })
-      }
-      return {
-        ...post,
-        author,
-      }
-    })
+    return await addAuthorToPosts(posts)
   }),
   createPost: privateProcedure
     .input(postInputSchema)

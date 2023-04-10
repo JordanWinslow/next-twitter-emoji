@@ -150,6 +150,7 @@ const UserPostPage: NextPage = () => {
               </div>
             )}
           </div>
+
           <div className="overflow-scroll p-8">
             {posts.map((post) => (
               <UserPost post={post} key={post.id} />

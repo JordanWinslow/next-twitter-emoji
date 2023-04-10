@@ -95,7 +95,7 @@ const CreatePostForm = () => {
 }
 
 type PostWithUser = RouterOutputs["posts"]["getAll"][number]
-const UserPost = ({ post }: { post: PostWithUser }) => {
+export const UserPost = ({ post }: { post: PostWithUser }) => {
   return (
     <div className="mb-3 flex flex-col" key={post.id}>
       <div className="flex rounded-t-lg bg-green-900 p-3">
