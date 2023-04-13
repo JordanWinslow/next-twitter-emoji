@@ -2,9 +2,6 @@ name: CI
 
 on: [push, pull_request]
 
-env:
-  DATABASE_URL: "any"
-
 jobs:
   build:
     runs-on: ubuntu-latest
