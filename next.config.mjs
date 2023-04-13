@@ -21,5 +21,15 @@ const config = {
   images: {
     domains: ["images.clerk.dev"],
   },
+  // faster minification with SWC instead of babel
+  swcMinify: true,
+  /* The below typescript and eslint options are to ignore ts and eslint
+  on Vercel deployment since we are using github CI for this. */
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 }
 export default config
