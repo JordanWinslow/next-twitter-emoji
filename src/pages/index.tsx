@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast"
 import { api, type RouterOutputs } from "~/utils/api"
 import { RootLayout } from "../Layouts/Layout"
 
-const LoadingSpinner = ({ size }: { size?: object }) => {
+const LoadingSpinner = ({ size }: { size?: number }) => {
   return (
     <div
       className="inline-block animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-green-400 motion-reduce:animate-[spin_1.5s_linear_infinite]"
