@@ -30,21 +30,23 @@ const UserProfilePage: NextPage<IUserProfilePageProps> = (props) => {
         <title>{`${profile.userName}'s Profile`}</title>
       </Head>
       <RootLayout>
-        <div className="relative mb-24 h-48 bg-green-900">
+        <div className="relative mb-20 h-full bg-green-900">
           <Image
             src={profile.image}
             alt={`${profile.userName} Profile Image`}
-            width={170}
-            height={170}
-            className="absolute bottom-0 left-0 -mb-20 ml-10 rounded-lg border-2 border-black"
+            width={130}
+            height={130}
+            className="absolute bottom-0 left-0 -mb-16 ml-10 rounded-lg border-2 border-black"
           />
         </div>
 
-        <div className="text-2xl font-bold">{`${profile.firstName || ""} ${
-          profile.lastName || ""
-        }`}</div>
-        <div className="border-b-2 border-green-800 pb-3">
-          @{profile.userName}
+        <div className="mx-10">
+          <div className="text-2xl font-bold">{`${profile.firstName || ""} ${
+            profile.lastName || ""
+          }`}</div>
+          <div className="border-b-2 border-green-800 pb-3">
+            @{profile.userName}
+          </div>
         </div>
         <div className="overflow-scroll p-8">
           {posts?.map((post) => (

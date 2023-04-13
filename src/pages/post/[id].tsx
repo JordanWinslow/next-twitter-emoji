@@ -97,8 +97,10 @@ const CreatePostForm = () => {
   }
 }
 
-type PostWithUser = RouterOutputs["posts"]["getByPostId"][number]
+type PostWithUser = RouterOutputs["posts"]["getByPostId"]
 const UserPost = ({ post }: { post: PostWithUser }) => {
+  if (!post) return null
+
   return (
     <div className="mb-3 flex flex-col" key={post.id}>
       <div className="flex rounded-t-lg bg-green-900 p-3">

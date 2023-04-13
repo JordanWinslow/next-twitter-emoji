@@ -99,17 +99,20 @@ export const UserPost = ({ post }: { post: PostWithUser }) => {
   return (
     <div className="mb-3 flex flex-col" key={post.id}>
       <div className="flex rounded-t-lg bg-green-900 p-3">
-        <Image
-          src={post.author?.image}
-          alt="Post's user avatar"
-          className="mr-3 rounded-xl"
-          width={50}
-          height={50}
-        />
+        <Link href={`/${post.author.userName}`}>
+          <Image
+            src={post.author?.image}
+            alt="Post's user avatar"
+            className="mr-3 rounded-xl"
+            width={50}
+            height={50}
+          />
+        </Link>
         <div className="flex flex-col">
           <Link href={`/${post.author.userName}`}>
             <p className="text-md">{post.author.userName}</p>
           </Link>
+
           <Link href={`/post/${post.id}`}>
             <p className="text-xs text-slate-300 opacity-75">
               @{" "}
@@ -119,7 +122,9 @@ export const UserPost = ({ post }: { post: PostWithUser }) => {
         </div>
       </div>
 
-      <p className="rounded-b-lg bg-green-950 p-3 text-xl">{post.content}</p>
+      <Link href={`/post/${post.id}`}>
+        <p className="rounded-b-lg bg-green-950 p-3 text-xl">{post.content}</p>
+      </Link>
     </div>
   )
 }
@@ -162,6 +167,7 @@ const Home: NextPage = () => {
             </div>
           )}
         </div>
+
         <div className="overflow-scroll p-8">
           {posts.map((post) => (
             <UserPost post={post} key={post.id} />
