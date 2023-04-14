@@ -7,8 +7,8 @@ import Link from "next/link"
 import { useRef, type FormEvent } from "react"
 import { toast } from "react-hot-toast"
 import { LoadingSpinner } from "~/components/LoadingSpinner"
+import { RootLayout } from "~/layouts/RootLayout"
 import { api, type RouterOutputs } from "~/utils/api"
-import { RootLayout } from "../layouts/Layout"
 
 const CreatePostForm = () => {
   const { user, isLoaded } = useUser()

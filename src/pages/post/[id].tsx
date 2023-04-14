@@ -7,7 +7,7 @@ import Image from "next/image"
 import { useRef, type FormEvent } from "react"
 import { toast } from "react-hot-toast"
 import superjson from "superjson"
-import { RootLayout } from "~/layouts/Layout"
+import { RootLayout } from "~/layouts/RootLayout"
 import { appRouter } from "~/server/api/root"
 import { prisma } from "~/server/db"
 import { api, type RouterOutputs } from "~/utils/api"
@@ -152,6 +152,7 @@ const PostPage: NextPage<IPostPageProps> = (props) => {
       <Head>
         <title>Twitter Emoji User Post Page</title>
       </Head>
+
       <RootLayout>
         <div className="flex border-b-2 border-green-900 p-4">
           {user.isSignedIn ? (

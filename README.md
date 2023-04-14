@@ -24,6 +24,8 @@ _The app is basically a re-skinned clone of twitter that only allows Emojis._
 
 - Rate limiting via **Upstash** _(expandable to support cron, queues and more)_
 
+- **React Query Dev Tools** (enabled in production to demonstrate. Click bottom left icon to see it in action)
+
 ## How is this being deployed?
 
 This application is currently being deployed through **Vercel** with a database hosted on **PlanetScale** and **CI** provided by **GitHub Actions**. Production logs are being collected through **Axiom**.
