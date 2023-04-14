@@ -3,11 +3,11 @@ import { type GetStaticProps, type NextPage } from "next"
 import Head from "next/head"
 import Image from "next/image"
 import superjson from "superjson"
+import { RootLayout } from "~/layouts/RootLayout"
 import { appRouter } from "~/server/api/root"
 import { prisma } from "~/server/db"
 import { api } from "~/utils/api"
 import { UserPost } from "."
-import { RootLayout } from "../Layouts/Layout"
 
 interface IUserProfilePageProps {
   username: string
@@ -29,6 +29,7 @@ const UserProfilePage: NextPage<IUserProfilePageProps> = (props) => {
       <Head>
         <title>{`${profile.userName}'s Profile`}</title>
       </Head>
+
       <RootLayout>
         <div className="relative mb-20 h-full bg-green-900">
           <Image

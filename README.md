@@ -1,28 +1,41 @@
-# Create T3 App
+# NextJS Twitter Emoji
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This is a [Jordan Winslow Portfolio](https://JordanWinslow.dev) project designed to demonstrate emerging "serverless" technologies in Front End development which allow us to quickly iterate and scale full-stack production applications without having to manage a complex Back End like Express/NestJS.
 
-## What's next? How do I make an app with this?
+_The app is basically a re-skinned clone of twitter that only allows Emojis._
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## App Features
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+- The home page fetches a list of all posts created by any user, requiring auth via Github or Google in order to create posts.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- Clicking a post image, content or timestamp takes us to a page dedicated for that post
 
-## Learn More
+- Clicking the username or user avatar takes us to a profile page for that user
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+- After **passwordless sign-in**, users can type and submit posts with **Zod object schema validation** and **friendly error messages** appearing in the UI for specific issues such as text/numbers being entered instead of an emoji, no content being posted, too many characters being posted, and even <u>**rate-limiting!**</u>
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## What are the key technologies demonstrated by this app?
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+- Server Side Rendering (SSR) + Client Hydration with **React Query** allows data fetching before the client ever receives the HTML _without losing access to the query context_ (in other words we have access to ALL the fetched data on the client, not just what was rendered)
 
-## How do I deploy this?
+- **tRPC** enables us to write Back End code on the Front End with automated end-to-end typesafety (No DTO type definitions, no duplicated types on BE/FE, automatic code completion)
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+- **Prisma** ORM is an experiment here. Not sure how I feel about this in production but the code is elegant and the DX is impressive.
+
+- Rate limiting via **Upstash** _(expandable to support cron, queues and more)_
+
+- **React Query Dev Tools** (enabled in production to demonstrate. Click bottom left icon to see it in action)
+
+## How is this being deployed?
+
+This application is currently being deployed through **Vercel** with a database hosted on **PlanetScale** and **CI** provided by **GitHub Actions**. Production logs are being collected through **Axiom**.
+
+## How would I improve this if it were a real product?
+
+- Pagination/Infinite Querying with React Query & React Virtual
+- Searching/Filtering Post Data
+- Edit/Update/Delete Functionality
+- Development & Feature branches
+- Integration Tests
+- Refactor pages/components to be a little more modular
+- Keep an eye on NextJS new app directory features and consider using the powerful new routing/layout/"use client" automation introduced in Next 13 once it becomes production ready
