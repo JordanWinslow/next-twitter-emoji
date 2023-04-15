@@ -15,7 +15,6 @@
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next"
-
 import { prisma } from "~/server/db"
 
 /**
@@ -89,7 +88,12 @@ const checkUserAuth = t.middleware(async ({ ctx, next }) => {
   if (!ctx.userId) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "User not logged in" })
   }
-  return next({ ctx: { userId: ctx.userId } })
+
+  return next({
+    ctx: {
+      userId: ctx.userId,
+    },
+  })
 })
 
 export const privateProcedure = t.procedure.use(checkUserAuth)

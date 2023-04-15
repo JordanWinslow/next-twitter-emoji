@@ -11,6 +11,8 @@ export const profileRouter = createTRPCRouter({
       const user = await clerkClient.users.getUserList({
         username: [input.username],
       })
+
+      // probably check other accounts here if none found
       if (user[0]) {
         return filterUserProperties(user[0])
       } else
@@ -19,6 +21,4 @@ export const profileRouter = createTRPCRouter({
           message: `User ${input.username} not found.`,
         })
     }),
-  /* getProfileByUserId: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
-  }) */
 })

@@ -2,7 +2,7 @@
 
 This is a [Jordan Winslow Portfolio](https://JordanWinslow.dev) project designed to demonstrate emerging "serverless" technologies in Front End development which allow us to quickly iterate and scale full-stack production applications without having to manage a complex Back End like Express/NestJS.
 
-_The app is basically a re-skinned clone of twitter that only allows Emojis._
+_The app is basically a re-skinned clone of twitter that only allows Emojis._ [Click here to view it in production](https://next-twitter-emoji-113lgjtkk-jordanwinslow.vercel.app/)
 
 ## App Features
 
@@ -32,6 +32,7 @@ This application is currently being deployed through **Vercel** with a database 
 
 ## How would I improve this if it were a real product?
 
+- Implement User Table instead of relying on queries to Clerk Auth for basic user info
 - Pagination/Infinite Querying with React Query & React Virtual
 - Searching/Filtering Post Data
 - Edit/Update/Delete Functionality
