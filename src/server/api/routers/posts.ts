@@ -17,7 +17,7 @@ const postInputSchema = z.object({
     .emoji("Only emojis are allowed!"),
 })
 
-import { Ratelimit } from "@upstash/ratelimit" // for deno: see above
+import { Ratelimit } from "@upstash/ratelimit"
 import { Redis } from "@upstash/redis"
 import { filterUserProperties } from "../util/filterUserProperties"
 

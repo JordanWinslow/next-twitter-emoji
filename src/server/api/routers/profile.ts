@@ -12,7 +12,6 @@ export const profileRouter = createTRPCRouter({
         username: [input.username],
       })
 
-      // probably check other accounts here if none found
       if (user[0]) {
         return filterUserProperties(user[0])
       } else
