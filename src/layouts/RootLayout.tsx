@@ -48,14 +48,22 @@ function InfoButtonModal() {
                 <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                   <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                     <div className="sm:flex sm:items-start">
-                      <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                      <div className="mt-3 sm:ml-4 sm:mt-0 sm:text-left">
                         <Dialog.Title
-                          as="h3"
-                          className="text-base font-semibold leading-6 text-gray-900"
+                          as="h2"
+                          className="mb-6 text-2xl font-semibold leading-6 text-gray-900"
                         >
                           About This App
                         </Dialog.Title>
                         <div className="mt-2">
+                          <p className="mb-2 text-sm text-gray-500">
+                            This app is designed to show off emerging serverless
+                            technologies and is not representative of my design
+                            skills. Please click the GitHub link below for more
+                            information on what is running under the hood or
+                            click my portfolio link on the bottom right to see
+                            some of my design work.
+                          </p>
                           <p className="mb-2 text-sm text-gray-500">
                             The home page displays a list of all posts from all
                             users, regardless of if you are logged in.
