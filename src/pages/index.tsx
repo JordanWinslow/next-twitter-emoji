@@ -28,7 +28,7 @@ const CreatePostForm = () => {
         if (inputRef.current) {
           inputRef.current.value = ""
         }
-        void ctx.posts.invalidate()
+        void ctx.posts.getAll.invalidate()
       },
     })
 
@@ -164,7 +164,7 @@ const Home: NextPage = () => {
   return (
     <>
       <RootLayout>
-        <div className="flex border-b-2 border-green-900 p-4">
+        <div className="mt-8 flex border-b-2 border-green-900 p-4 md:mt-0">
           {user.isSignedIn ? (
             <CreatePostForm />
           ) : (

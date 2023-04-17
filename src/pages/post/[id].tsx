@@ -1,11 +1,9 @@
-import { SignInButton, useUser } from "@clerk/nextjs"
+import { useUser } from "@clerk/nextjs"
 import { createProxySSGHelpers } from "@trpc/react-query/ssg"
 import dayjs from "dayjs"
 import { type GetStaticProps, type NextPage } from "next"
 import Head from "next/head"
 import Image from "next/image"
-import { useRef, type FormEvent } from "react"
-import { toast } from "react-hot-toast"
 import superjson from "superjson"
 import { RootLayout } from "~/layouts/RootLayout"
 import { appRouter } from "~/server/api/root"
@@ -24,77 +22,6 @@ const LoadingSpinner = ({ size }: { size?: number }) => {
       </span>
     </div>
   )
-}
-
-const CreatePostForm = () => {
-  const { user, isLoaded } = useUser()
-  const ctx = api.useContext()
-
-  const { mutate: createPost, isLoading: isPosting } =
-    api.posts.createPost.useMutation({
-      onError: (error) => {
-        console.dir(error)
-        const apiErrorMessage =
-          error.data?.zodError?.fieldErrors.content?.[0] || error.shape?.message
-        const defaultErrorMessage =
-          "Error posting, please ensure you are posting 1 or more emojis. No numbers or text is allowed!"
-
-        toast.error(apiErrorMessage || defaultErrorMessage)
-      },
-      onSuccess: () => {
-        if (inputRef.current) {
-          inputRef.current.value = ""
-        }
-        void ctx.posts.invalidate()
-      },
-    })
-
-  const inputRef = useRef<HTMLInputElement>(null)
-  // would replace this with a form library like finalform or react-hook-form
-  // if this was a real production app
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (inputRef.current) {
-      createPost({ content: inputRef.current.value })
-    }
-  }
-
-  if (!isLoaded) {
-    return <LoadingSpinner />
-  } else if (!user) {
-    return (
-      <div>
-        Something went wrong logging you in, please refresh and try again
-      </div>
-    )
-  } else {
-    return (
-      <div className="flex w-full items-center">
-        <Image
-          src={user.profileImageUrl}
-          alt={`@${user.username || "your"} user avatar`}
-          className="rounded-xl"
-          width={90}
-          height={90}
-        />
-        <form className="flex grow" onSubmit={handleSubmit}>
-          <input
-            ref={inputRef}
-            name="content"
-            placeholder="Post some emojis!"
-            className="mx-4 grow rounded-lg bg-gradient-to-r from-black to-green-950 p-3 text-green-500  outline-none"
-          />
-          <button
-            className="rounded-lg bg-green-900 px-3"
-            type="submit"
-            disabled={isPosting}
-          >
-            {!isPosting ? "Post" : <LoadingSpinner size={17} />}
-          </button>
-        </form>
-      </div>
-    )
-  }
 }
 
 type PostWithUser = RouterOutputs["posts"]["getByPostId"]
@@ -154,14 +81,23 @@ const PostPage: NextPage<IPostPageProps> = (props) => {
       </Head>
 
       <RootLayout>
-        <div className="flex border-b-2 border-green-900 p-4">
-          {user.isSignedIn ? (
-            <CreatePostForm />
-          ) : (
-            <div className="flex justify-center">
-              <SignInButton />
-            </div>
-          )}
+        <div className="relative mb-20 h-32 flex-none bg-green-900">
+          <Image
+            src={post.author.image}
+            alt={`${post.author.userName} Profile Image`}
+            width={130}
+            height={130}
+            className="absolute bottom-0 left-0 -mb-16 ml-10 rounded-lg border-2 border-black"
+          />
+        </div>
+
+        <div className="mx-10">
+          <div className="text-2xl font-bold">{`${
+            post.author.firstName || ""
+          } ${post.author.lastName || ""}`}</div>
+          <div className="border-b-2 border-green-800 pb-3">
+            @{post.author.userName}
+          </div>
         </div>
 
         <div className="overflow-scroll p-8">

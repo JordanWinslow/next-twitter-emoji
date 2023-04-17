@@ -24,17 +24,19 @@ const UserProfilePage: NextPage<IUserProfilePageProps> = (props) => {
 
   const { data: posts } = api.posts.getByUserId.useQuery({ userId: profile.id })
 
+  const username = profile.userName
+
   return (
     <>
       <Head>
-        <title>{`${profile.userName}'s Profile`}</title>
+        <title>{`${username}'s Profile`}</title>
       </Head>
 
       <RootLayout>
-        <div className="relative mb-20 h-full bg-green-900">
+        <div className="relative mb-20 h-32 flex-none bg-green-900">
           <Image
             src={profile.image}
-            alt={`${profile.userName} Profile Image`}
+            alt={`${username} Profile Image`}
             width={130}
             height={130}
             className="absolute bottom-0 left-0 -mb-16 ml-10 rounded-lg border-2 border-black"
