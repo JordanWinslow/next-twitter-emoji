@@ -60,8 +60,8 @@ const CreatePostForm = () => {
                 width: 90,
                 height: 90,
                 borderRadius: "20px",
-                "&:focus": { borderRadius: "20px" },
               },
+              userButtonTrigger__open: { boxShadow: "none" },
             },
           }}
         />
@@ -146,7 +146,6 @@ export function Footer() {
 const Home: NextPage = () => {
   const user = useUser()
 
-  console.log("USER ON HOME PAGE: ", user)
   const { data: posts, isLoading } = api.posts.getAll.useQuery()
 
   if (isLoading) {

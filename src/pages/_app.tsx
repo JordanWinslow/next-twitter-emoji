@@ -1,4 +1,5 @@
 import { ClerkProvider } from "@clerk/nextjs"
+import { dark } from "@clerk/themes"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { type AppType } from "next/app"
 import Head from "next/head"
@@ -19,7 +20,12 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <link rel="icon" type="image/png" href="/favicon.png" />
       </Head>
       <Toaster />
-      <ClerkProvider {...pageProps}>
+      <ClerkProvider
+        {...pageProps}
+        appearance={{
+          baseTheme: dark,
+        }}
+      >
         <Component {...pageProps} />
       </ClerkProvider>
       {/* Normally we would not run this in production but enabling it since this is a
