@@ -67,8 +67,8 @@ function InfoButtonModal() {
                             see the post validation.
                           </p>
                           <p className="mb-2 text-sm text-gray-500">
-                            Click a user's name or avatar to see a page with all
-                            their posts.
+                            Click a user&apos;s name or avatar to see a page
+                            with all their posts.
                           </p>
                           <p className="mb-2 text-sm text-gray-500">
                             Click a post or timestamp to see a page with just

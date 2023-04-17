@@ -1,4 +1,3 @@
-import { useUser } from "@clerk/nextjs"
 import { createProxySSGHelpers } from "@trpc/react-query/ssg"
 import dayjs from "dayjs"
 import { type GetStaticProps, type NextPage } from "next"
@@ -56,8 +55,6 @@ interface IPostPageProps {
 }
 
 const PostPage: NextPage<IPostPageProps> = (props) => {
-  const user = useUser()
-
   const { data: post, isLoading } = api.posts.getByPostId.useQuery({
     id: props.postId,
   })
